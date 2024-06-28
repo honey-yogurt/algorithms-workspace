@@ -1,4 +1,9 @@
+// see: https://leetcode.cn/problems/two-sum/
 package array
+
+// 1. 暴力二重循环
+// 2. 利用 map ,提前 保存[value]index
+// 3. 利用 map，边 遍历边保存，不一定需要保存全部的 [value]index
 
 // O(n^2) 时间复杂度
 // 25ms 3.3MB
