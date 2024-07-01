@@ -1,4 +1,4 @@
-package main
+package stack
 
 // 本质上是一个反复写的slice，通过length控制栈顶
 type Stack struct {
