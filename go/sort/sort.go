@@ -28,9 +28,10 @@ func BubbleMaxSort2(arr []int) []int {
 		// 每一轮都少比较一个。因为每一轮都确定了一个最大位置
 		for j := 0; j < n-i-1; j++ {
 			if arr[j] > arr[j+1] {
-				tem := arr[j]
-				arr[j] = arr[j+1]
-				arr[j+1] = tem
+				//tem := arr[j]
+				//arr[j] = arr[j+1]
+				//arr[j+1] = tem
+				arr[j], arr[j+1] = arr[j+1], arr[j]
 				// 发生交换
 				flag = true
 			}
@@ -108,4 +109,134 @@ func SelectSort(arr []int) []int {
 	}
 
 	return arr
+}
+
+// 这种直接对原始数组操作，可能不是很好理解
+func MergeSort1(arr []int) {
+	p := 0
+	q := len(arr) - 1
+	mergeSort1(arr, p, q)
+}
+
+func mergeSort1(arr []int, l, r int) {
+	if l == r {
+		return
+	}
+	// 默认向下取整
+	m := (l + r) / 2
+	mergeSort1(arr, l, m)
+	mergeSort1(arr, m+1, r)
+	merge1(arr, l, m, r)
+}
+
+func merge1(arr []int, l, m, r int) {
+	temp := make([]int, r-l+1)
+	// 双指针
+	i := l
+	j := m + 1
+
+	// 临时数组下标
+	k := 0
+	for ; i <= m && j <= r; k++ {
+		if arr[i] <= arr[j] {
+			temp[k] = arr[i]
+			i++
+		} else {
+			temp[k] = arr[j]
+			j++
+		}
+	}
+	// 其中一组（不知道哪一组）遍历结束
+
+	// 左边没有遍历完
+	for ; i <= m; i++ {
+		temp[k] = arr[i]
+		k++
+	}
+
+	// 右边没有遍历完
+	for ; j <= r; j++ {
+		temp[k] = arr[j]
+		k++
+	}
+	copy(arr[l:r+1], temp)
+}
+
+// 返回的不是原数组了，但是易于理解
+func MergeSort2(arr []int) []int {
+	if len(arr) < 2 {
+		return arr
+	}
+	m := len(arr) / 2
+	left := MergeSort2(arr[:m])
+	right := MergeSort2(arr[m:])
+	// 排序
+	return merge2(left, right)
+}
+
+func merge2(left, right []int) []int {
+	tem := make([]int, len(left)+len(right))
+	i, j := 0, 0
+	k := 0
+	m, n := len(left), len(right)
+	for {
+		if i >= m || j >= n {
+			break
+		}
+		if left[i] <= right[j] {
+			tem[k] = left[i]
+			i++
+		} else {
+			tem[k] = right[j]
+			j++
+		}
+		k++
+	}
+	for ; i < m; i++ {
+		tem[k] = left[i]
+		k++
+	}
+	for ; j < n; j++ {
+		tem[k] = right[j]
+		k++
+	}
+	return tem
+}
+
+func QuickSort(arr []int) {
+	quickSort(arr, 0, len(arr)-1)
+}
+
+func quickSort(arr []int, l, r int) {
+	if l >= r {
+		return
+	}
+	q := partition(arr, l, r)
+	quickSort(arr, l, q-1)
+	quickSort(arr, q+1, r)
+}
+
+func partition(arr []int, l, r int) int {
+	pivot := arr[r]
+	i := l // 最终 pivot 所在的索引,，运行时指代的是未分区的第一索引位置
+	// 每次把 [j,r-1] 中默认都是没有比较的值，[l,i-1]都是处理比较好的数据（也就是小于pivot）
+	for j := l; j < r; j++ {
+		// 需要交换到 arr[j]，这样 arr[j] 就小于 pivot，未处理区间缩小，i++
+		if arr[j] < pivot {
+			if i != j {
+				//tem := arr[j]
+				//arr[j] = arr[i]
+				//arr[i] = tem
+				arr[i], arr[j] = arr[j], arr[i]
+			}
+			// 收缩未处理分区
+			i++
+		}
+	}
+	// 最后把 r（pivot）交换到 arr[i]，返回 i
+	//tem := arr[i]
+	//arr[i] = pivot
+	//arr[r] = tem
+	arr[i], arr[r] = arr[r], arr[i]
+	return i
 }

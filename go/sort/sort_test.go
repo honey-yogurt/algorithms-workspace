@@ -32,3 +32,17 @@ func TestSelectSort(t *testing.T) {
 	s := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
 	fmt.Println(SelectSort(s))
 }
+
+func TestMergeSort(t *testing.T) {
+	s := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
+	MergeSort1(s)
+	fmt.Println(s)
+	s1 := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
+	fmt.Println(MergeSort2(s1))
+}
+
+func TestQuickSort(t *testing.T) {
+	s := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
+	QuickSort(s)
+	fmt.Println(s)
+}
