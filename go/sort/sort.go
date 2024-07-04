@@ -240,3 +240,107 @@ func partition(arr []int, l, r int) int {
 	arr[i], arr[r] = arr[r], arr[i]
 	return i
 }
+
+func BucketSort(arr []int) {
+	num := len(arr)
+	if num < 1 {
+		return
+	}
+	max := Max(arr)
+	// 二维切片
+	buckets := make([][]int, num) // 最大为 num，万一一个桶一个元素呢，每个元素就是桶
+	index := 0                    // 桶序号
+	for i := 0; i < num; i++ {
+		index = arr[i] * (num - 1) / max // arr[i] / max = [0~1]，然后乘以 num-1，按比例尽可能均匀分配到桶上，保证桶之间是有序的
+		buckets[index] = append(buckets[index], arr[i])
+	}
+	pos := 0 // 标记数组的位置
+	for i := 0; i < num; i++ {
+		bucketLen := len(buckets[i])
+		if bucketLen > 0 {
+			QuickSort(buckets[i])       // 依次快排
+			copy(arr[pos:], buckets[i]) // 排序写回原数组
+			pos += bucketLen
+		}
+	}
+}
+
+func CountingSort(arr []int) {
+	if len(arr) <= 1 {
+		return
+	}
+	max := Max(arr)
+
+	c := make([]int, max+1) // 从 0 到 max+1，下标索引就代表这个 要排序的元素值
+	// 这个循环结束，c 每个下标对应的值 就代表 arr中元素值等于下标的元素有多少个
+	// 比如c[0] 代表在 待排序的数组（arr）中，0 有多少个，a[max] 代表 最大值有多少个
+	for i := 0; i < len(arr); i++ {
+		c[arr[i]]++
+	}
+	// 此时我们只知道 arr 中给一个元素，该元素有多少个，但是并不知道这个元素排序位置，也就是在这个元素之前有多少个
+
+	// 对c 进行顺序累加，这时候给定一个元素m，c[m]就代表 小于等于 c[m] 有多少个了。
+	// 但是仍然不知道该元素的排名，因为此时已经不知道该元素有多少个了，并且这个元素在一堆相同的元素中的排序
+	for i := 1; i < len(c); i++ {
+		c[i] += c[i-1]
+	}
+
+	// 倒序扫描 arr，每扫到一个元素m，该m肯定是所以一堆m 中最大的，也就是它的排序就是 c[m]，然后 c[m]-1，下一次扫到 m 时候，这个 m 就是c[m]
+	r := make([]int, len(arr))
+	for i := len(arr) - 1; i >= 0; i-- {
+		index := c[arr[i]] - 1 // arr[i] 排序是 c[i]，下标 -1
+		r[index] = arr[i]      // 放入对应的序号
+		c[arr[i]]--            // 累加减一
+	}
+	copy(arr, r)
+}
+
+func RadixSort(arr []int) {
+	// 最大值，判断总共多少位
+	max := Max(arr)
+	// 从最低位（个位）开始处理
+	exp := 1
+	// 向下取整，第一次循环对个位排序，第二次循环对十位排序 ...
+	for int(max/exp) > 0 {
+		arr = countingSortByExp(arr, exp)
+		exp *= 10
+	}
+}
+
+func countingSortByExp(arr []int, exp int) []int {
+	n := len(arr)
+	// 输出排序好的临时结果
+	output := make([]int, n)
+
+	// 0-9 共 10 位
+	count := make([]int, 10)
+	// 第一遍循环得到每个数字的 count，注意位数
+	for i := 0; i < n; i++ {
+		expNum := (arr[i] / exp) % 10 // 所在 exp 位的数字
+		count[expNum]++
+	}
+	// 顺序累加
+	for i := 1; i < 10; i++ {
+		count[i] += count[i-1]
+	}
+
+	// 倒序遍历 arr
+	for i := n - 1; i >= 0; i-- {
+		index := (arr[i] / exp) % 10
+		output[count[index]-1] = arr[i]
+		count[index]--
+	}
+
+	copy(arr, output)
+	return arr
+}
+
+func Max(arr []int) int {
+	max := arr[0]
+	for i := 1; i < len(arr); i++ {
+		if arr[i] > max {
+			max = arr[i]
+		}
+	}
+	return max
+}

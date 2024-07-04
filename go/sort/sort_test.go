@@ -46,3 +46,21 @@ func TestQuickSort(t *testing.T) {
 	QuickSort(s)
 	fmt.Println(s)
 }
+
+func TestBucketSort(t *testing.T) {
+	s := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
+	BucketSort(s)
+	fmt.Println(s)
+}
+
+func TestCountingSort(t *testing.T) {
+	s := []int{3, 5, 4, 1, 2, 6, 1, 2, 8, 5, 10}
+	CountingSort(s)
+	fmt.Println(s)
+}
+
+func TestRadixSort(t *testing.T) {
+	s := []int{170, 745, 675, 903, 802, 245, 200, 661, 171}
+	RadixSort(s)
+	fmt.Println(s)
+}
