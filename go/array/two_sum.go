@@ -1,9 +1,12 @@
 // see: https://leetcode.cn/problems/two-sum/
 package array
 
+import "sort"
+
 // 1. 暴力二重循环
 // 2. 利用 map ,提前 保存[value]index
-// 3. 利用 map，边 遍历边保存，不一定需要保存全部的 [value]index
+// 3. 利用 map，边遍历边保存，不一定需要保存全部的 [value]index
+// 4. 双指针（假设数组有组），只要数组有序，就应该想到双指针技巧
 
 // O(n^2) 时间复杂度
 // 25ms 3.3MB
@@ -67,4 +70,23 @@ func twoSum4(nums []int, target int) []int {
 		numsMap[num] = i
 	}
 	return nil
+}
+
+func twoSum5(nums []int, target int) []int {
+	n := len(nums)
+	sort.Ints(nums)
+	i := 0
+	j := n - 1
+	for i < j {
+		// 具体如何减少循环的优化见 三个数相加
+		sum := nums[i] + nums[j]
+		if sum == target {
+			return []int{i, j}
+		} else if sum > target {
+			j--
+		} else {
+			i++
+		}
+	}
+	return []int{}
 }
