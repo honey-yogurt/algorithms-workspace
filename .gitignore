@@ -49,3 +49,5 @@ bld/
 **/*.idea
 **/*.iml
 **/*out
+
+.history/**

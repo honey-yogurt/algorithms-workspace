@@ -1,6 +1,6 @@
 code space of algo.
 
-数组：
+## 数组：
 + [两数之和](https://leetcode.cn/problems/two-sum/description/)
 + [三数之和](https://leetcode.cn/problems/3sum/description/)
 + [反转字符串](https://leetcode.cn/problems/reverse-string/description/)
@@ -13,7 +13,7 @@ code space of algo.
 
 
 
-滑动窗口O(n)：
+### 滑动窗口O(n)：
 
 滑动窗口算法技巧主要用来解决**子数组问题**，比如让你**寻找符合某个条件的最长/最短子数组**。
 
@@ -101,3 +101,9 @@ func slidingWindow(s string) {
 + [字符串排列](https://leetcode.cn/problems/permutation-in-string/description/)
 + [最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/description/)
 + [找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
+
+
+## 链表
+
++ [合并两个有序数组](https://leetcode.cn/problems/merge-two-sorted-lists/description/)
++ [分隔链表](https://leetcode.cn/problems/partition-list/description/)
